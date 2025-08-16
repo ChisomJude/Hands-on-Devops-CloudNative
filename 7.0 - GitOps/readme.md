@@ -104,6 +104,7 @@ ps aux | grep 'kubectl -n argocd port-forward'
 kill -9 <pid>   #eg kill -9 230745
 
 ```
+#### Remember to update your initial Password in User Info 
 
 <img width="1194" height="280" alt="image" src="https://github.com/user-attachments/assets/5a3073c2-5566-4174-bcb2-512fcab09646" />
 
@@ -111,6 +112,9 @@ kill -9 <pid>   #eg kill -9 230745
 
 
 ## Application Deployment 
+
+Let's prepare our app repo using the format [Helm App Repo ](https://github.com/ChisomJude/student-progress-tracker2) 
+Free free to reuse Week 6 repo since you already have a working CI or recreate as shown in the link above
 
 
 
