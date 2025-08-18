@@ -1,4 +1,5 @@
-# GITOPS  - with Gitactions and Argocd
+# GITOPS  - with Git Actions and Argo-cd
+his guide sets up a Kind Kubernetes cluster on an EC2 instance, installs Argo CD, wires your Helm chart & CI, and uses port‑forwarding (not LoadBalancer) to access both the Argo CD UI (8080) and the app (8000).
 
 ## Set up your environment
 On a new EC2 instance, run these installations (skip if already set up). Ensure all the ports you intend to use are enabled on your security group - 80,8080,8000 etc
@@ -113,8 +114,108 @@ kill -9 <pid>   #eg kill -9 230745
 
 ## Application Deployment 
 
-Let's prepare our app repo using the format [Helm App Repo ](https://github.com/ChisomJude/student-progress-tracker2) 
-Free free to reuse Week 6 repo since you already have a working CI or recreate as shown in the link above
+Let's prepare our app repo using the format in 
+[Complete-app-deployment-with-gitops](https://github.com/ChisomJude/complete-app-deployment-with-gitops)
 
+```
+Feel free to reuse your application for Week 6  and helm file in week 5,  since you already have a working CI, however you will need to make adjustments.
+``
+├── .github/
+│ └── workflows/
+│ └── ci.yml  #ci to build image using gitactions
+│
+├── argocd/
+│ └── student-progress-app.yml  #ref- run on cluster to add app to argocd
+│
+├── helm/
+│ └── student-progress/
+│ ├── templates/
+│ │ ├── _helpers.tpl
+│ │ ├── deployment.yaml
+│ │ ├── pda.yml
+│ │ ├── service.yaml
+│ │ └── ingress.yaml # (if you add want to use ingress)
+│ ├── Chart.yaml
+│ └── values.yaml
+│
+├── src/
+│ └── app/   # app files except requirement file and dockerfile
+│ ├── init.py
+│ ├── crud.py
+│ ├── database.py
+│ ├── main.py
+│ ├── models.py
+│ └── templates/
+│       └──index.html
+│       │__other html files (your HTML templates here)
+│
+├── Dockerfile
+├── requirements.txt
+├── LICENSE
+└── README.md
+```
+
+
+### Add the file to Argo CD
+
+This step adds you app to argocd. Ref - `student-progress-app.yml` run this file on your cluster  using kubectl apply -f file.yml
+
+
+```
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: student-progress
+  namespace: argocd  #argocd namespace
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/ChisomJude/complete-app-deployment-with-gitops.git
+    targetRevision: master
+    path: helm/student-progress
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: my-app   #app namespace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
+
+### Apply the Application
+
+```
+kubectl apply -n argocd -f argocd/student-progress-app.yaml
+kubectl -n argocd get applications.argoproj.io
+
+```
+### Create Secret 
+Create the app Secret once in the destination namespace, we wont be commiting secrets in git , we will reference this in helm files. 
+
+```
+kubectl -n my-app create secret generic vault-secrets \
+  --from-literal=VAULT_ADDR="http://44.x.x.x:8200" \
+  --from-literal=VAULT_ROLE_ID="REPLACE_ROLE_ID" \
+  --from-literal=VAULT_SECRET_ID="REPLACE_SECRET_ID"
+
+```
+### GITOPS - Build, Push, Bump Chart
+ Your ci is expected to build your docker image `.github/workflows/ci.yml`
+ - Builds `DOCKERHUB_USER/helm-deployment-app:${GITHUB_SHA}`
+ - Pushes to Docker Hub
+ - Updates helm/student-progress/values.yaml with new image.repository, image.tag 
+ - Argo CD auto‑syncs that commit
+
+### Push your app  and test your deployment
+Once your app is synced and Healthfrom argocd ui
+Port Forward
+
+<img src="argosetup.png" alt="argocdimage">
+
+
+```
+nohup kubectl -n my-app port-forward svc/student-progress 8000:80 --address 0.0.0.0 > app-pf.log 2>&1 &
+tail -f app-pf.log
+```
 
 
