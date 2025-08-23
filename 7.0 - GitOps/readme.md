@@ -182,23 +182,28 @@ spec:
       selfHeal: true
 ```
 
-### Apply the Application
 
-```
-kubectl apply -n argocd -f argocd/student-progress-app.yaml
-kubectl -n argocd get applications.argoproj.io
-
-```
 ### Create Secret 
 Create the app Secret once in the destination namespace, we wont be commiting secrets in git , we will reference this in helm files. 
 
 ```
+kubectl create ns my-app
+
 kubectl -n my-app create secret generic vault-secrets \
   --from-literal=VAULT_ADDR="http://44.x.x.x:8200" \
   --from-literal=VAULT_ROLE_ID="REPLACE_ROLE_ID" \
   --from-literal=VAULT_SECRET_ID="REPLACE_SECRET_ID"
 
 ```
+### Apply the Application
+
+```
+
+kubectl apply -n argocd -f argocd/student-progress-app.yaml
+kubectl -n argocd get applications.argoproj.io
+
+```
+
 ### GITOPS - Build, Push, Bump Chart
  Your ci is expected to build your docker image `.github/workflows/ci.yml`
  - Builds `DOCKERHUB_USER/helm-deployment-app:${GITHUB_SHA}`
