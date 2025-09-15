@@ -4,11 +4,7 @@
 
 `kubectl create ns monitoring`
 
-## Create Project for monitoring in your argocd 
-```
 
-
-```
 ## New Improvement on your app 
 
 ```
@@ -54,12 +50,13 @@ helm/student-progress/templates/servicemonitor.yml
 
 ## Apply in the cluster 
 ```
-## Create project
+# Create project
 kubectl create ns monitoring
 kubectl apply -f argo/root/app-of-apps.yml
+```
 
-
-## Fort forward  and view your Deportment on the UI
+## Fort forward  and view your Deployment on the UI
+```
 kubectl -n argocd port-forward svc/argo-cd-argocd-server 8080:80 --address 0.0.0.0  #argo
 kubectl -n monitoring port-forward svc/kps-grafana 3000:80 --address 0.0.0.0 #grafana
 
