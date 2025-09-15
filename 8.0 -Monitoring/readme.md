@@ -1,5 +1,7 @@
 # Monitoring Stack - GitOPs Deployment
 
+![alt text](image-2.png)
+
 ## Create a Namespace - Monitoring
 
 `kubectl create ns monitoring`
@@ -46,8 +48,6 @@ helm/student-progress/values.yaml
 helm/student-progress/templates/servicemonitor.yml
 ```
 
-
-
 ## Apply in the cluster 
 ```
 # Create project
@@ -61,3 +61,5 @@ kubectl -n argocd port-forward svc/argo-cd-argocd-server 8080:80 --address 0.0.0
 kubectl -n monitoring port-forward svc/kps-grafana 3000:80 --address 0.0.0.0 #grafana
 
 ```
+
+![alt text](image.png)

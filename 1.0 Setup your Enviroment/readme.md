@@ -94,3 +94,21 @@ tmux new -s mysession
 tmux ls
 #attach a session
 tmux attach -t mysession
+```
+
+## Joining After the Class, Please Check below to set up your DB properly
+
+
+### Application repo: [Student Tracker App](https://github.com/ChisomJude/student-project-tracker)
+
+### Database Url:  Database on Mongo , connect via Vault [Setup and Manage Vault ](https://github.com/ChisomJude/Manage-Hosted-Vault-Server/tree/master )
+
+You can recreate your NO-SQL DB with [MongoDB - Atlas](https://account.mongodb.com/account/login?signedOut=true)
+
+
+### Sample Data ;
+``` {"_id":{"$oid":"68550a55a55e874c9322ccb6"},"id":"9dfb53c8-10e3-4f0e-9801-e4d8e188315a","name":"Maryb","progress":{"week1":"Completed","week2":"Completed","week3":"Completed","week4":"Completed","week6":"Completed","week5":"started"}}
+```
+
+![alt text](image.png)
+

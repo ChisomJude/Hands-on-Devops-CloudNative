@@ -18,8 +18,6 @@ This repo is a beginner-to-hero guide on Cloud Native with a hands-on project to
 | 5    | **Kubernetes Services & Ingress**              | LoadBalancer, NodePort, Ingress Controller        | Add Ingress to access app externally (e.g., NGINX Ingress)  |
 | 6    | **GitHub Actions for CI/CD**                   | Docker build & Helm release pipeline              | Set up Actions to build/push image & update Helm chart      |
 | 7    | **GitOps with ArgoCD**                         | GitOps concepts, ArgoCD installation              | Install ArgoCD on Kind, sync Helm app from GitHub           |
-| 8    | **App Configs, Secrets, and Envs**             | K8s secrets/configmaps, secure deployment         | Refactor app to use secrets/configmaps, update Helm         |
+| 8    | **App Configs, Secrets, and Envs**             | K8s secrets/configmaps, secure deployment         | 
 | 9    | **Monitoring with Prometheus & Grafana**       | Metrics, dashboards, K8s monitoring stack         | Install Prometheus/Grafana with Helm, monitor app health    |
 | 10   | **Logging & Observability with Loki**          | Collect app logs, visualize in Grafana            | Install Loki, tail app logs in Grafana                      |
-| 11   | **Scaling, Resource Limits, and Auto-healing** | HPA, readiness/liveness probes                    | Add CPU/memory limits, HPA for app                          |
-| 12   | **Capstone Review & Portfolio Setup**          | Recap full pipeline, deploy final version         | Students demo full CI/CD + GitOps + Observability setup     |
